@@ -6,6 +6,6 @@ class ProductsController < ApplicationController
 
   def show
     product = Product.find(params[:id])
-    render json: product
+    render json: { id: product.id, name: product.name, sku: product.sku }
   end
 end
