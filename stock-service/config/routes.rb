@@ -5,4 +5,5 @@ Rails.application.routes.draw do
 
   get '/stock_summary', to: 'stock_summary#index'
   post "/refresh_stock_summary", to: "stock_summary#refresh"
+  get "/health", to: proc { [200, {}, ['OK']] }
 end
