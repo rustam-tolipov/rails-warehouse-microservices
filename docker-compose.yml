@@ -1,0 +1,73 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  products-service:
+    build:
+      context: ./products-service
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/products_service_development
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./products-service:/app
+
+  transactions-service:
+    build:
+      context: ./transactions-service
+    depends_on:
+      - postgres
+      - products-service
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/transactions_service_development
+      STOCK_SERVICE_URL: http://stock-service:3000
+    ports:
+      - "3003:3000"
+    volumes:
+      - ./transactions-service:/app
+
+  stock-service:
+    build:
+      context: ./stock-service
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/transactions_service_development
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "3002:3000"
+    volumes:
+      - ./stock-service:/app
+
+  stock-sidekiq:
+    build:
+      context: ./stock-service
+    depends_on:
+      - redis
+      - postgres
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/transactions_service_development
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./stock-service:/app
+
+volumes:
+  pgdata:
