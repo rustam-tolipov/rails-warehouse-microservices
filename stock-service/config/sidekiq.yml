@@ -1,0 +1,5 @@
+:concurrency: 5
+:schedule:
+  refresh_stock_summary_job:
+    cron: "*/5 * * * *" # every 5 minutes
+    class: "RefreshStockSummaryJob"
