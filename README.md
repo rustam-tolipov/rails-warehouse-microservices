@@ -121,14 +121,6 @@ rails-warehouse-microservices/
 * Sidekiq auto-refresh every 5 minutes (like a goldfish memory reset)
 * Materialized views for speed (aka SQL cheat codes)
 
-## ✨ Inspiration
-
-Oh, by the way — if you're wondering why this README feels different from other dev projects, you're not alone.
-
-I’ve watched a few too many [Let’s Game It Out](https://www.youtube.com/@LetsGameItOut) videos, and I think that chaos energy slipped in here. It wasn’t the plan — it just happened.
-
----
-
 ## ⚙️ Future Plans
 
 * Health check endpoints (to prove we’re still alive)
@@ -137,27 +129,6 @@ I’ve watched a few too many [Let’s Game It Out](https://www.youtube.com/@Let
 * Optional frontend to click buttons and feel powerful
 
 ---
-
-## 💸 PostgreSQL Generation Preset
-
-If you're reading this and thinking:
-
-> "Wow, this is overkill."
-
-You're right. But if you're also the kind of client with enough budget to pay someone to overengineer a warehouse backend that could rival Amazon's… call me. I already have a preset in my PostgreSQL client labeled **"Dear Client with Great Wealth 🏦"** just for you.
-
-Here's the config I use in my `.psqlrc` or when I want PostgreSQL to start sweating:
-
-```sql
--- Overkill mode: enabled
-SET work_mem = '64kB';
-SET shared_buffers = '16MB';         -- note: requires config reload if set permanently
-SET temp_buffers = '800kB';
-SET effective_cache_size = '32MB';
-SET max_parallel_workers_per_gather = 0;  -- because we fly solo here
-```
-
-It's minimal. It's dangerous. It's questionably effective. But it’s mine.
 
 ## 🙃 Author
 
